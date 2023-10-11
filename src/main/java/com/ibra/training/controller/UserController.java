@@ -12,8 +12,12 @@ import java.util.Optional;
 @RestController
 public class UserController {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/")
     public Iterable<User> allUsers() {

@@ -1,29 +1,31 @@
 package com.ibra.training.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class User extends BaseModel{
 
     private String name;
 
     public User(String name) {
         this.name = name;
     }
+
+    @Column(unique = true, nullable = false)
+    private String username;
+    @Column(nullable = false)
+    private String password;
+    private String role_name;
+    private String email;
+    private String phone;
+    private boolean enabled = true;
+
 }
