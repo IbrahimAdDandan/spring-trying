@@ -4,6 +4,7 @@ import com.ibra.training.model.User;
 import com.ibra.training.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,11 +21,13 @@ public class UserController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Iterable<User> allUsers() {
         return userRepository.findAll();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public User getUser(HttpServletResponse response, @PathVariable Long id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()) {
@@ -35,6 +38,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(HttpServletResponse response, @PathVariable Long id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()) {
@@ -45,10 +49,12 @@ public class UserController {
 
     @PostMapping("/")
     public User create(@RequestBody User user) {
+        user.setRole_name("GUEST");
         return userRepository.save(user);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public User update(HttpServletResponse response, @PathVariable("id") Long userId, @RequestBody User user) {
         Optional<User> oldUser = userRepository.findById(userId);
         if(oldUser.isEmpty()) {
